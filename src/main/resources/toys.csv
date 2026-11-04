@@ -1,0 +1,11 @@
+# type,name,price,ageGroup,size,specificProperty
+CAR,Hot Wheels Mini,15.0,PRESCHOOL,SMALL,false
+CAR,City Sedan,40.0,TODDLER,MEDIUM,false
+CAR,RC Monster Truck,120.0,SCHOOL,LARGE,true
+DOLL,Barbie Classic,45.0,PRESCHOOL,MEDIUM,Plastic
+DOLL,Soft Plush Baby Doll,25.0,BABY,SMALL,Cloth
+BALL,Football Pro,30.0,SCHOOL,MEDIUM,Soccer
+BALL,Tennis Ball,5.0,SCHOOL,SMALL,Tennis
+BLOCKS,Wooden Alphabet Cubes,20.0,BABY,SMALL,12
+BLOCKS,Mega Construction Set,60.0,TODDLER,LARGE,100
+
