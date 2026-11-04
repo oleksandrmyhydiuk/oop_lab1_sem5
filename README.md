@@ -1,5 +1,7 @@
 # Playroom Console Application
 
+[![Java CI with Maven](https://github.com/oleksandrmyhydiuk/oop_lab1_sem5/actions/workflows/ci.yml/badge.svg)](https://github.com/oleksandrmyhydiuk/oop_lab1_sem5/actions/workflows/ci.yml)
+
 A Java console application designed to prepare and manage a children's playroom across different age groups within an allocated budget and fixed toy capacity. Built to demonstrate core Object-Oriented Programming (OOP) principles, clean package architecture, adherence to Oracle Java Code Conventions, and comprehensive unit testing with JUnit 5 and Mockito.
 
 ## Features
@@ -48,6 +50,7 @@ src/
 * **Maven** (Build & dependency management)
 * **JUnit 5 (Jupiter)** (Unit testing)
 * **Mockito 5** (Mocking dependencies in UI tests)
+* **GitHub Actions** (Continuous Integration for automated test runs)
 
 ## How to Run
 Ensure you have Java 17+ and Maven installed. From the project root directory, run:
@@ -62,3 +65,6 @@ To execute the complete JUnit 5 and Mockito unit test suite:
 ```bash
 mvn test
 ```
+
+## License
+This project is licensed under the [MIT License](LICENSE).
