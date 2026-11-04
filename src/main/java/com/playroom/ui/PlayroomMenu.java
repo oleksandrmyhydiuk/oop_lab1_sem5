@@ -1,26 +1,34 @@
 package com.playroom.ui;
 
-import com.playroom.storage.PlayroomStorage;
 import com.playroom.model.Toy;
+import com.playroom.storage.PlayroomStorage;
 
+import java.util.List;
+
+/**
+ * Handles console interactions for playroom preparation, sorting, and searching.
+ */
 public class PlayroomMenu {
-    private final PlayroomStorage database;
+
+    private final PlayroomStorage storage;
     private final UserInput input;
 
-    public PlayroomMenu(PlayroomStorage database, UserInput input) {
-        this.database = database;
+    public PlayroomMenu(PlayroomStorage storage, UserInput input) {
+        this.storage = storage;
         this.input = input;
     }
 
     public void preparePlayroom() {
         double budget = input.readDouble("Enter the budget for the playroom:");
-        database.setupPlayroom(budget);
-        System.out.println("Playroom prepared within the budget of $" + budget);
+        int maxToys = input.readInt("Enter the maximum number of toys:");
+        storage.setupPlayroom(budget, maxToys);
+        System.out.println("Playroom prepared within the budget of $" + budget
+                + " (max toys: " + maxToys + ").");
     }
 
     public void displayPlayroomToys() {
         System.out.println("\n--- Playroom Toys ---");
-        var playroom = database.getPlayroom();
+        List<Toy> playroom = storage.getPlayroom();
         if (playroom.isEmpty()) {
             System.out.println("Playroom is empty. Prepare it first!");
         } else {
@@ -29,7 +37,7 @@ public class PlayroomMenu {
     }
 
     public void sortToys() {
-        database.sortPlayroomToysByPrice();
+        storage.sortPlayroomToysByPrice();
         System.out.println("Toys in playroom sorted by price.");
         displayPlayroomToys();
     }
@@ -39,7 +47,7 @@ public class PlayroomMenu {
         double max = input.readDouble("Enter maximum price:");
 
         System.out.println("\n--- Found Toys ---");
-        var found = database.findToysInPlayroomByPrice(min, max);
+        List<Toy> found = storage.findToysInPlayroomByPrice(min, max);
         if (found.isEmpty()) {
             System.out.println("No toys found in this price range.");
         } else {
