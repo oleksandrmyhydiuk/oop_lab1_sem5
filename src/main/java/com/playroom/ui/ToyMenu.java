@@ -1,20 +1,32 @@
 package com.playroom.ui;
 
+import com.playroom.model.AgeGroup;
+import com.playroom.model.Ball;
+import com.playroom.model.Blocks;
+import com.playroom.model.Car;
+import com.playroom.model.Doll;
+import com.playroom.model.Size;
+import com.playroom.model.Toy;
 import com.playroom.storage.PlayroomStorage;
-import com.playroom.model.*;
 
+import java.util.List;
+
+/**
+ * Handles console interactions for managing the toy catalog.
+ */
 public class ToyMenu {
-    private final PlayroomStorage database;
+
+    private final PlayroomStorage storage;
     private final UserInput input;
 
-    public ToyMenu(PlayroomStorage database, UserInput input) {
-        this.database = database;
+    public ToyMenu(PlayroomStorage storage, UserInput input) {
+        this.storage = storage;
         this.input = input;
     }
 
     public void displayAllToys() {
         System.out.println("\n--- Toy Catalog ---");
-        var catalog = database.getCatalog();
+        List<Toy> catalog = storage.getCatalog();
         if (catalog.isEmpty()) {
             System.out.println("Catalog is empty.");
         } else {
@@ -25,34 +37,74 @@ public class ToyMenu {
     }
 
     public void addToy() {
-        int type = input.readInt("Enter toy type (1-Car, 2-Doll, 3-Ball):");
+        int type = input.readInt("Enter toy type (1-Car, 2-Doll, 3-Ball, 4-Blocks):");
+        if (type < 1 || type > 4) {
+            System.out.println("Invalid toy type. Toy not added.");
+            return;
+        }
+
         String name = input.readString("Enter name:");
         double price = input.readDouble("Enter price:");
+        AgeGroup ageGroup = selectAgeGroup();
+        Size size = selectSize();
 
         switch (type) {
             case 1:
                 boolean isElectric = input.readBoolean("Is it electric? (true/false):");
-                database.addToyToCatalog(new Car(name, price, AgeGroup.PRESCHOOL, Size.MEDIUM, isElectric));
+                storage.addToyToCatalog(new Car(name, price, ageGroup, size, isElectric));
                 break;
             case 2:
                 String material = input.readString("Enter material (e.g., Plastic, Cloth):");
-                database.addToyToCatalog(new Doll(name, price, AgeGroup.PRESCHOOL, Size.MEDIUM, material));
+                storage.addToyToCatalog(new Doll(name, price, ageGroup, size, material));
                 break;
             case 3:
                 String sport = input.readString("Enter sport type (e.g., Soccer, Tennis):");
-                database.addToyToCatalog(new Ball(name, price, AgeGroup.SCHOOL, Size.SMALL, sport));
+                storage.addToyToCatalog(new Ball(name, price, ageGroup, size, sport));
+                break;
+            case 4:
+                int pieceCount = input.readInt("Enter number of pieces:");
+                storage.addToyToCatalog(new Blocks(name, price, ageGroup, size, pieceCount));
                 break;
             default:
-                System.out.println("Invalid toy type. Toy not added.");
                 return;
         }
         System.out.println("Toy successfully added!");
     }
 
+    private AgeGroup selectAgeGroup() {
+        int choice = input.readInt(
+                "Select age group (1-BABY, 2-TODDLER, 3-PRESCHOOL, 4-SCHOOL):"
+        );
+        switch (choice) {
+            case 1:
+                return AgeGroup.BABY;
+            case 2:
+                return AgeGroup.TODDLER;
+            case 3:
+                return AgeGroup.PRESCHOOL;
+            case 4:
+            default:
+                return AgeGroup.SCHOOL;
+        }
+    }
+
+    private Size selectSize() {
+        int choice = input.readInt("Select size (1-SMALL, 2-MEDIUM, 3-LARGE):");
+        switch (choice) {
+            case 1:
+                return Size.SMALL;
+            case 2:
+                return Size.MEDIUM;
+            case 3:
+            default:
+                return Size.LARGE;
+        }
+    }
+
     public void removeToy() {
         displayAllToys();
         int index = input.readInt("Enter the index of the toy to remove:");
-        boolean success = database.removeToyFromCatalog(index);
+        boolean success = storage.removeToyFromCatalog(index);
         if (success) {
             System.out.println("Toy removed.");
         } else {
